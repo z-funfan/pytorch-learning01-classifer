@@ -1,3 +1,4 @@
+import time
 import torch
 import torchvision
 from torchvision.transforms import transforms
@@ -90,6 +91,7 @@ net = Net()
 criterion = nn.CrossEntropyLoss()
 optimizer = optim.SGD(net.parameters(), lr=0.001, momentum=0.9)
 
+start = time.perf_counter()
 for epoch in range(2):  # loop over the dataset multiple times
 
     running_loss = 0.0
@@ -113,7 +115,8 @@ for epoch in range(2):  # loop over the dataset multiple times
                   (epoch + 1, i + 1, running_loss / 2000))
             running_loss = 0.0
 
-print('Finished Training')
+end = time.perf_counter()
+print('Finished Training, cost {:.6} seconds'.format(end-start))
 
 if __name__ == "__main__":
     import matplotlib.pyplot as plt
