@@ -1,4 +1,4 @@
-# 使用GPU加速新运算
+# # Pytorch学习2 - 使用GPU加速新运算
 
 之前谢了一个简单的图片分类器来区分图片中的内容。但是运行之后就发现，训练过程是在是太慢了，下面是默认使用CPU的运行结果。
 
@@ -79,8 +79,6 @@ net.to(device)
 上网搜索了一下，说是使用安装包安装的Pytorch就会有这个问题，解决方法是从源码安装
 
 ### 从源码安装Pytorch
-提示：期间肯能需要科学上网，最近正值祖国母亲的生日，科学上网遇到了一些问题。
-
 首先，先要卸载原先从安装包安装的Pytorch
 ```
 pip uninstall torch
@@ -94,17 +92,16 @@ pip install numpy pyyaml mkl mkl-include setuptools cmake cffi typing
 ```
 git clone --recursive https://github.com/pytorch/pytorch
 cd pytorch
-set "VS150COMNTOOLS=C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\VC\Auxiliary\Build"
-set CMAKE_GENERATOR=Visual Studio 15 2017 Win64
-set DISTUTILS_USE_SDK=1
-REM The following two lines are needed for Python 2.7, but the support for it is very experimental.
-set MSSdk=1
-set FORCE_PY27_BUILD=1
-REM As for CUDA 8, VS2015 Update 3 is also required to build PyTorch. Use the following two lines.
-set "PREBUILD_COMMAND=%VS140COMNTOOLS%\..\..\VC\vcvarsall.bat"
-set PREBUILD_COMMAND_ARGS=x64
+# if you are updating an existing checkout
+git submodule sync
+git submodule update --init --recursive
 
-call "%VS150COMNTOOLS%\vcvarsall.bat" x64 -vcvars_ver=14.11
+# set CMAKE_GENERATOR=Visual Studio 15 2017
+set CMAKE_GENERATOR=Visual Studio 16 2019
+set CMAKE_GENERATOR_TOOLSET_VERSION=14.11
+set DISTUTILS_USE_SDK=1
+for /f "usebackq tokens=*" %i in (`"%ProgramFiles(x86)%\Microsoft Visual Studio\Installer\vswhere.exe" -version [15^,16^) -products * -latest -property installationPath`) do call "%i\VC\Auxiliary\Build\vcvarsall.bat" x64 -vcvars_ver=%CMAKE_GENERATOR_TOOLSET_VERSION%
+
 python setup.py install
 ```
 
@@ -115,3 +112,10 @@ import torch
 torch.cuda.is_available()
 
 ```
+
+提示：期间可能需要科学上网，最近正值祖国母亲的生日，科学上网遇到了一些问题，最后没能成功。
+
+
+## 参考
+- [Data Parallelism](https://pytorch.org/tutorials/beginner/blitz/data_parallel_tutorial.html#sphx-glr-beginner-blitz-data-parallel-tutorial-py)
+- [Install From Source](https://github.com/pytorch/pytorch/#from-source)

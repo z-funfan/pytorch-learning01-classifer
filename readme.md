@@ -221,5 +221,5 @@ if __name__ == "__main__":
 
 ```
 # 参考
-[Pytorch官网入门教程](https://pytorch.org/tutorials/beginner/blitz/cifar10_tutorial.html)
-https://www.imooc.com/article/35821
+- [Pytorch官网入门教程](https://pytorch.org/tutorials/beginner/blitz/cifar10_tutorial.html)
+- https://www.imooc.com/article/35821
